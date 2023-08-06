@@ -87,7 +87,7 @@ tabuleiro.forEach((tab) => {
 
       }
 
-      if (jogadasJogador1.length === 3 && jogadasJogador2.length === 3) {
+      if (jogadasJogador1.length === 3 || jogadasJogador2.length === 3) {
 
         posicoesVitoria.forEach((casa) => {
           let casa1 = document.getElementById(casa[0]);

@@ -10,68 +10,92 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="dist/output.css">
+    <meta name="description" content="Jogo da Velha">
+    <meta name="keywords" content="Jogo da Velha, Tic Tac Toe, Frontend, TailwindCSS, Lucas Antunes">
+    <meta name="author" content="Lucas Antunes">
 </head>
 
-<body class="bg-white dark:bg-neutral-950">
+<body class="bg-white dark:bg-neutral-900">
 
-    <h1 class="text-violet-600 text-4xl text-center font-bold my-4">
-        Jogo da Velha
-    </h1>
+    <header>
+        <h1 class="text-violet-600 text-4xl text-center font-bold my-4">
+            Jogo da Velha
+        </h1>
 
-    <div id="jogadores" class="flex justify-center gap-3 mb-4">
-        <p class="dark:text-white font-bold" id="j1">Jogador 1</p>
-        <p class="dark:text-white font-bold" id="j2">Jogador 2</p>
-    </div>
+        <div id="jogadores" class="flex justify-center gap-3 mb-4">
+            <p class="dark:text-white font-bold" id="j1">Jogador 1</p>
+            <p class="dark:text-white font-bold" id="j2">Jogador 2</p>
+        </div>
+
+    </header>
 
     <main class="w-full flex justify-center items-center">
         <table class="w-96 h-96">
             <tr>
-                <td class="border-b-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="11" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                <td
+                    class="border-b-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="11"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
                         <p class="invisible">a</p>
                     </button>
                 </td>
-                <td class="border-b-2 border-x-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="12" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                <td
+                    class="border-b-2 border-x-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="12"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
                         <p class="invisible">a</p>
                     </button>
                 </td>
-                <td class="border-b-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="13" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
-                        <p class="invisible">a</p>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td class="border-y-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="21" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
-                        <p class="invisible">a</p>
-                    </button>
-                </td>
-                <td class="border-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="22" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
-                        <p class="invisible">a</p>
-                    </button>
-                </td>
-                <td class="border-y-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="23" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                <td
+                    class="border-b-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="13"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
                         <p class="invisible">a</p>
                     </button>
                 </td>
             </tr>
             <tr>
-                <td class="border-t-2 border-t-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="31" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                <td
+                    class="border-y-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="21"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
                         <p class="invisible">a</p>
                     </button>
                 </td>
-                <td class="border-t-2 border-x-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="32" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                <td class="border-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="22"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
                         <p class="invisible">a</p>
                     </button>
                 </td>
-                <td class="border-t-2 border-gray-500 casa hover:cursor-pointer dark:text-white">
-                    <button type="button" id="33" class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                <td
+                    class="border-y-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="23"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                        <p class="invisible">a</p>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td
+                    class="border-t-2 border-t-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="31"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                        <p class="invisible">a</p>
+                    </button>
+                </td>
+                <td
+                    class="border-t-2 border-x-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="32"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
+                        <p class="invisible">a</p>
+                    </button>
+                </td>
+                <td
+                    class="border-t-2 border-gray-500 casa hover:cursor-pointer dark:text-white disabled:cursor-pointer">
+                    <button type="button" id="33"
+                        class="w-full h-full font-bold text-6xl hover:bg-emerald-100 dark:hover:bg-emerald-950">
                         <p class="invisible">a</p>
                     </button>
                 </td>
@@ -80,7 +104,7 @@
     </main>
 
 </body>
-<script src="https://cdn.tailwindcss.com"></script>
+<!-- <script src="https://cdn.tailwindcss.com"></script> -->
 <script src="script.js"></script>
 
 </html>
