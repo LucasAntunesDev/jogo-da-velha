@@ -99,8 +99,6 @@ const Tabuleiro = () => {
         if (novasJogadasJogador1.length >= 3 && verificarVitoria(novasJogadasJogador1)) {
           setVencedor('Jogador 1')
 
-          alert('Jogador 1 ganhou')
-
           setHidden(false)
           return
         }
@@ -118,8 +116,6 @@ const Tabuleiro = () => {
 
           if (novasJogadasJogador2.length >= 3 && verificarVitoria(novasJogadasJogador2)) {
             setVencedor('Jogador 2')
-            
-            alert('Jogador 2 (Máquina) ganhou')
 
             setHidden(false)
             return
@@ -157,6 +153,8 @@ const Tabuleiro = () => {
           </span>
         ))}
       </header>
+
+      <div className={`w-fit bg-slate-800 text-white p-4 rounded-2xl mx-auto my-4 ${hidden ? 'hidden' : 'flex'}`}>{vencedor} ganhou</div>
 
       <div className="flex justify-center mb-4">
         <button
