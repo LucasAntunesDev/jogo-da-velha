@@ -139,6 +139,23 @@ const Tabuleiro = () => {
 
   return (
     <>
+
+    <div className={`z-20 ${hidden ? 'hidden' : 'flex'} backdrop-blur-sm w-screen h-screen absolute justify-center items-center`}>
+      <div className={`bg-slate-800/60 text-white leading-loose flex-col justify-center items-center w-10/12 rounded-2xl mx-auto min-h-64 z-10 fixed backdrop-blur-sm `}>
+      
+      <p>
+          {vencedor} Ganhou
+      </p>
+      
+      <button
+        type="button"
+        onClick={reiniciarJogo}
+        className={`${hidden ? 'hidden' : 'flex'} py-2 px-6 bg-sky-600 text-white leading-loose rounded-2xl hover:bg-sky-700 transition ease-in-out mx-auto my-4`}>
+        Zerar Jogo
+      </button>
+
+    </div>
+      </div>
       <header className="flex gap-x-8 mx-auto w-fit p-2 rounded shadow mb-6">
         {jogadores.map((jogador, index) => (
           <span
@@ -154,7 +171,9 @@ const Tabuleiro = () => {
         ))}
       </header>
 
-      <div className={`w-fit bg-slate-800 text-white p-4 rounded-2xl mx-auto my-4 ${hidden ? 'hidden' : 'flex'}`}>{vencedor} ganhou</div>
+      {/* <div className={`w-fit bg-slate-800 text-white p-4 rounded-2xl mx-auto my-4 ${hidden ? 'hidden' : 'flex'}`}>{vencedor} ganhou</div> */}
+
+      
 
       <div className="flex justify-center mb-4">
         <button
@@ -185,12 +204,12 @@ const Tabuleiro = () => {
         ))}
       </div>
 
-      <button
+      {/* <button
         type="button"
         onClick={reiniciarJogo}
         className={`${hidden ? 'hidden' : 'flex'} py-2 px-6 bg-sky-600 text-white leading-loose rounded-2xl hover:bg-sky-700 transition ease-in-out mx-auto my-4`}>
         Zerar Jogo
-      </button>
+      </button> */}
     </>
   )
 }
