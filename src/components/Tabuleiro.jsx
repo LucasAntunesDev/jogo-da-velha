@@ -1,9 +1,10 @@
 import O from './O'
 import X from './X'
 import Casa from './Casa'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 
 const Tabuleiro = () => {
+  
   const combinacoesVitoria = [
     //Horizontal
     [0, 1, 2],
@@ -27,11 +28,16 @@ const Tabuleiro = () => {
 
   const jogadores = [0, 1]
 
+  const [hidden , setHidden] = useState(true)
+
   const [jogadorAtual, setJogadorAtual] = useState(0)
+  
   const [jogadasJogador1, setJogadasJogador1] = useState([])
   const [jogadasJogador2, setJogadasJogador2] = useState([])
-  const [modoJogo, setModoJogo] = useState('fácil') // Estado para o modo de jogo
-  const [desativado, setDesativado] = useState(false) // Estado para desativar botões
+
+  const [modoJogo, setModoJogo] = useState('fácil') 
+  
+  const [desativado, setDesativado] = useState(false) 
 
   const verificarVitoria = (jogadas) => {
     for (let combinacao of combinacoesVitoria) {
@@ -55,13 +61,16 @@ const Tabuleiro = () => {
     setVencedor(null)
     setCasasVitoria([])
     setDesativado(false)
+    setHidden(true)
   }
 
   const jogadaAleatoria = (novasCasas) => {
     let indexAleatorio
+
     do {
       indexAleatorio = Math.floor(Math.random() * 9)
     } while (novasCasas[indexAleatorio] !== null)
+
     return indexAleatorio
   }
 
@@ -89,32 +98,45 @@ const Tabuleiro = () => {
         setCasas(novasCasas)
         if (novasJogadasJogador1.length >= 3 && verificarVitoria(novasJogadasJogador1)) {
           setVencedor('Jogador 1')
+
           alert('Jogador 1 ganhou')
+
+          setHidden(false)
           return
         }
         setJogadorAtual(1)
         setDesativado(true) // Desativa os botões
 
-        // Jogada da máquina
         setTimeout(() => {
           const indexMaquina = modoJogo === 'fácil' ? jogadaAleatoria(novasCasas) : jogadaDificil(novasCasas)
+
           novasCasas[indexMaquina] = <O />
+
           const novasJogadasJogador2 = [...jogadasJogador2, indexMaquina]
           setJogadasJogador2(novasJogadasJogador2)
           setCasas(novasCasas)
+
           if (novasJogadasJogador2.length >= 3 && verificarVitoria(novasJogadasJogador2)) {
             setVencedor('Jogador 2')
+            
             alert('Jogador 2 (Máquina) ganhou')
+
+            setHidden(false)
             return
           }
+
           setJogadorAtual(0)
-          setDesativado(false) // Reativa os botões
+          setDesativado(false)
 
           if (verificarEmpate(novasCasas)) {
+
+            setHidden(false)
+
             alert('O jogo terminou empatado!')
+
             reiniciarJogo()
           }
-        }, 500) // Adiciona um pequeno atraso para a jogada da máquina
+        }, 500)
       }
     }
   }
@@ -168,7 +190,7 @@ const Tabuleiro = () => {
       <button
         type="button"
         onClick={reiniciarJogo}
-        className="flex py-2 px-6 bg-sky-600 text-white leading-loose rounded-2xl hover:bg-sky-700 transition ease-in-out mx-auto my-4">
+        className={`${hidden ? 'hidden' : 'flex'} py-2 px-6 bg-sky-600 text-white leading-loose rounded-2xl hover:bg-sky-700 transition ease-in-out mx-auto my-4`}>
         Zerar Jogo
       </button>
     </>
