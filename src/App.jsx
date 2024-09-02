@@ -1,12 +1,12 @@
-import "./css/App.css";
-import { Tabuleiro } from './components/Tabuleiro';
+import './css/App.css'
+import Tabuleiro from './components/Tabuleiro'
 
 function App() {
   return (
-    <div className="bg-violet-950">
-      <Tabuleiro/>
+    <div className="bg-slate-900 h-screen">
+      <Tabuleiro />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
