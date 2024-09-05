@@ -2,6 +2,7 @@ import O from './O'
 import X from './X'
 import Casa from './Casa'
 import {useState} from 'react'
+import {ArrowRightIcon, XMarkIcon} from '@heroicons/react/16/solid'
 
 const Tabuleiro = () => {
   const combinacoesVitoria = [
@@ -77,7 +78,6 @@ const Tabuleiro = () => {
   }
 
   const jogadaDificil = novasCasas => {
-    // Tenta bloquear o jogador 1
     for (let combinacao of combinacoesVitoria) {
       const jogadasJogador1NaCombinacao = combinacao.filter(index =>
         jogadasJogador1.includes(index)
@@ -92,7 +92,7 @@ const Tabuleiro = () => {
         return casasVaziasNaCombinacao[0]
       }
     }
-    // Se não houver necessidade de bloquear, faz uma jogada aleatória
+   
     return jogadaAleatoria(novasCasas)
   }
 
@@ -118,8 +118,7 @@ const Tabuleiro = () => {
           return
         }
         setJogadorAtual(1)
-        setDesativado(true) // Desativa os botões
-
+        setDesativado(true)
         setTimeout(() => {
           const indexMaquina =
             modoJogo === 'fácil'
@@ -172,19 +171,7 @@ const Tabuleiro = () => {
             <button
               onClick={reiniciarJogo}
               className="inline-flex  m-4 hover:*:text-white/80">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18 18 6M6 6l12 12"
-                />
-              </svg>
+              <XMarkIcon className="size-5" />
             </button>
           </div>
 
@@ -202,19 +189,28 @@ const Tabuleiro = () => {
           </button>
         </div>
       </div>
-      <header className="flex gap-x-8 mx-auto w-fit p-2 rounded shadow mb-6">
-        {jogadores.map((jogador, index) => (
-          <span
-            className={`flex gap-x-2 font-bold ${
-              jogadorAtual === jogador ? 'text-teal-400' : 'text-white'
-            }`}
-            key={index}>
-            Jogador {jogador + 1}
-            <p className="text-zinc-50 font-normal" key={index}>
-              0
-            </p>
-          </span>
-        ))}
+
+      <header className="flex flex-col gap-x-8 mx-auto w-fit p-2 rounded shadow mb-6 items-center">
+        <a
+          href="/jogos-anteriores"
+          className="text-white inline-flex hover:text-white/80 items-center gap-x-2">
+          Ver jogos anteriores <ArrowRightIcon className="size-5" />
+        </a>
+
+        <div className="flex gap-x-8 mx-auto w-fit p-2">
+          {jogadores.map((jogador, index) => (
+            <span
+              className={`flex gap-x-2 font-bold ${
+                jogadorAtual === jogador ? 'text-teal-400' : 'text-white'
+              }`}
+              key={index}>
+              Jogador {jogador + 1}
+              <p className="text-zinc-50 font-normal" key={index}>
+                0
+              </p>
+            </span>
+          ))}
+        </div>
       </header>
 
       <div className="flex justify-center mb-4">
@@ -254,12 +250,6 @@ const Tabuleiro = () => {
         ))}
       </div>
 
-      {/* <button
-        type="button"
-        onClick={reiniciarJogo}
-        className={`${hidden ? 'hidden' : 'flex'} py-2 px-6 bg-sky-600 text-white leading-loose rounded-2xl hover:bg-sky-700 transition ease-in-out mx-auto my-4`}>
-        Zerar Jogo
-      </button> */}
     </>
   )
 }
