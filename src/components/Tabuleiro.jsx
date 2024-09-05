@@ -4,7 +4,6 @@ import Casa from './Casa'
 import {useState} from 'react'
 
 const Tabuleiro = () => {
-  
   const combinacoesVitoria = [
     //Horizontal
     [0, 1, 2],
@@ -28,18 +27,20 @@ const Tabuleiro = () => {
 
   const jogadores = [0, 1]
 
-  const [hidden , setHidden] = useState(true)
+  const [hidden, setHidden] = useState(true)
 
   const [jogadorAtual, setJogadorAtual] = useState(0)
-  
+
   const [jogadasJogador1, setJogadasJogador1] = useState([])
   const [jogadasJogador2, setJogadasJogador2] = useState([])
 
-  const [modoJogo, setModoJogo] = useState('fácil') 
-  
-  const [desativado, setDesativado] = useState(false) 
+  const [modoJogo, setModoJogo] = useState('fácil')
 
-  const verificarVitoria = (jogadas) => {
+  const [desativado, setDesativado] = useState(false)
+
+  const [trancarDificuldade, setTrancarDificuldade] = useState(false)
+
+  const verificarVitoria = jogadas => {
     for (let combinacao of combinacoesVitoria) {
       if (combinacao.every(index => jogadas.includes(index))) {
         setCasasVitoria(combinacao)
@@ -49,7 +50,7 @@ const Tabuleiro = () => {
     return false
   }
 
-  const verificarEmpate = (casas) => {
+  const verificarEmpate = casas => {
     return casas.every(casa => casa !== null)
   }
 
@@ -62,9 +63,10 @@ const Tabuleiro = () => {
     setCasasVitoria([])
     setDesativado(false)
     setHidden(true)
+    setTrancarDificuldade(false)
   }
 
-  const jogadaAleatoria = (novasCasas) => {
+  const jogadaAleatoria = novasCasas => {
     let indexAleatorio
 
     do {
@@ -74,12 +76,19 @@ const Tabuleiro = () => {
     return indexAleatorio
   }
 
-  const jogadaDificil = (novasCasas) => {
+  const jogadaDificil = novasCasas => {
     // Tenta bloquear o jogador 1
     for (let combinacao of combinacoesVitoria) {
-      const jogadasJogador1NaCombinacao = combinacao.filter(index => jogadasJogador1.includes(index))
-      const casasVaziasNaCombinacao = combinacao.filter(index => novasCasas[index] === null)
-      if (jogadasJogador1NaCombinacao.length === 2 && casasVaziasNaCombinacao.length === 1) {
+      const jogadasJogador1NaCombinacao = combinacao.filter(index =>
+        jogadasJogador1.includes(index)
+      )
+      const casasVaziasNaCombinacao = combinacao.filter(
+        index => novasCasas[index] === null
+      )
+      if (
+        jogadasJogador1NaCombinacao.length === 2 &&
+        casasVaziasNaCombinacao.length === 1
+      ) {
         return casasVaziasNaCombinacao[0]
       }
     }
@@ -91,12 +100,18 @@ const Tabuleiro = () => {
     const novasCasas = casas.slice()
 
     if (novasCasas[index] === null && !vencedor && !desativado) {
-      if(jogadorAtual === 0){
+      if (jogadorAtual === 0) {
         novasCasas[index] = <X />
         const novasJogadasJogador1 = [...jogadasJogador1, index]
         setJogadasJogador1(novasJogadasJogador1)
+
+        setTrancarDificuldade(true)
+
         setCasas(novasCasas)
-        if (novasJogadasJogador1.length >= 3 && verificarVitoria(novasJogadasJogador1)) {
+        if (
+          novasJogadasJogador1.length >= 3 &&
+          verificarVitoria(novasJogadasJogador1)
+        ) {
           setVencedor('Jogador 1')
 
           setHidden(false)
@@ -106,15 +121,24 @@ const Tabuleiro = () => {
         setDesativado(true) // Desativa os botões
 
         setTimeout(() => {
-          const indexMaquina = modoJogo === 'fácil' ? jogadaAleatoria(novasCasas) : jogadaDificil(novasCasas)
+          const indexMaquina =
+            modoJogo === 'fácil'
+              ? jogadaAleatoria(novasCasas)
+              : jogadaDificil(novasCasas)
 
           novasCasas[indexMaquina] = <O />
 
           const novasJogadasJogador2 = [...jogadasJogador2, indexMaquina]
           setJogadasJogador2(novasJogadasJogador2)
+
+          setTrancarDificuldade(true)
+
           setCasas(novasCasas)
 
-          if (novasJogadasJogador2.length >= 3 && verificarVitoria(novasJogadasJogador2)) {
+          if (
+            novasJogadasJogador2.length >= 3 &&
+            verificarVitoria(novasJogadasJogador2)
+          ) {
             setVencedor('Jogador 2')
 
             setHidden(false)
@@ -125,7 +149,6 @@ const Tabuleiro = () => {
           setDesativado(false)
 
           if (verificarEmpate(novasCasas)) {
-
             setHidden(false)
 
             alert('O jogo terminou empatado!')
@@ -139,22 +162,45 @@ const Tabuleiro = () => {
 
   return (
     <>
+      <div
+        className={`z-20 ${
+          hidden ? 'hidden' : 'flex flex-col'
+        } backdrop-blur-sm w-screen h-screen absolute justify-center items-center`}>
+        <div
+          className={`bg-slate-800/60 text-white leading-loose flex-col justify-center items-center w-10/12 rounded-2xl mx-auto min-h-64 z-10 fixed backdrop-blur-sm `}>
+          <div className="flex w-full justify-end">
+            <button
+              onClick={reiniciarJogo}
+              className="inline-flex  m-4 hover:*:text-white/80">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
 
-    <div className={`z-20 ${hidden ? 'hidden' : 'flex'} backdrop-blur-sm w-screen h-screen absolute justify-center items-center`}>
-      <div className={`bg-slate-800/60 text-white leading-loose flex-col justify-center items-center w-10/12 rounded-2xl mx-auto min-h-64 z-10 fixed backdrop-blur-sm `}>
-      
-      <p>
-          {vencedor} Ganhou
-      </p>
-      
-      <button
-        type="button"
-        onClick={reiniciarJogo}
-        className={`${hidden ? 'hidden' : 'flex'} py-2 px-6 bg-sky-600 text-white leading-loose rounded-2xl hover:bg-sky-700 transition ease-in-out mx-auto my-4`}>
-        Zerar Jogo
-      </button>
+          <p className="m-auto size-fit font-bold text-5xl text-teal-600">
+            {vencedor} Ganhou
+          </p>
 
-    </div>
+          <button
+            type="button"
+            onClick={reiniciarJogo}
+            className={`${
+              hidden ? 'hidden' : 'flex'
+            } py-2 px-6 bg-sky-500 text-white leading-loose rounded-2xl hover:bg-sky-600 transition ease-in-out mx-auto my-12`}>
+            Zerar Jogo
+          </button>
+        </div>
       </div>
       <header className="flex gap-x-8 mx-auto w-fit p-2 rounded shadow mb-6">
         {jogadores.map((jogador, index) => (
@@ -171,23 +217,27 @@ const Tabuleiro = () => {
         ))}
       </header>
 
-      {/* <div className={`w-fit bg-slate-800 text-white p-4 rounded-2xl mx-auto my-4 ${hidden ? 'hidden' : 'flex'}`}>{vencedor} ganhou</div> */}
-
-      
-
       <div className="flex justify-center mb-4">
         <button
           type="button"
           onClick={() => setModoJogo('fácil')}
-          className={`py-2 px-4 mx-2 ${modoJogo === 'fácil' ? 'bg-green-600' : 'bg-gray-600'} text-white rounded`}
-          disabled={desativado}>
+          className={`py-2 px-4 mx-2 disabled:cursor-not-allowed ${
+            modoJogo === 'fácil'
+              ? 'bg-emerald-600 disabled:bg-emerald-600/50'
+              : 'bg-slate-600'
+          } text-white rounded`}
+          disabled={trancarDificuldade}>
           Fácil
         </button>
         <button
           type="button"
           onClick={() => setModoJogo('difícil')}
-          className={`py-2 px-4 mx-2 ${modoJogo === 'difícil' ? 'bg-red-600' : 'bg-gray-600'} text-white rounded`}
-          disabled={desativado}>
+          className={`py-2 px-4 mx-2 disabled:cursor-not-allowed ${
+            modoJogo === 'difícil'
+              ? 'bg-rose-600 disabled:bg-rose-600/50'
+              : 'bg-slate-600'
+          } text-white rounded`}
+          disabled={trancarDificuldade}>
           Difícil
         </button>
       </div>
