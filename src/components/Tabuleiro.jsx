@@ -92,7 +92,7 @@ const Tabuleiro = () => {
         return casasVaziasNaCombinacao[0]
       }
     }
-   
+
     return jogadaAleatoria(novasCasas)
   }
 
@@ -176,7 +176,7 @@ const Tabuleiro = () => {
           </div>
 
           <p className="m-auto size-fit font-bold text-5xl text-teal-600">
-            {vencedor} Ganhou
+            {vencedor === 'Jogador 1' ? 'Jogaador 1' : 'A máquina'} ganhou
           </p>
 
           <button
@@ -249,7 +249,6 @@ const Tabuleiro = () => {
           />
         ))}
       </div>
-
     </>
   )
 }
