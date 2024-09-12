@@ -1,7 +1,7 @@
 import O from './O'
 import X from './X'
 import Casa from './Casa'
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {ArrowRightIcon, XMarkIcon} from '@heroicons/react/16/solid'
 
 const Tabuleiro = () => {
@@ -20,9 +20,18 @@ const Tabuleiro = () => {
     [6, 4, 2],
   ]
 
+  const [numeroJogo, setNumeroJogo] = useState(() => {
+    const savedNumero = localStorage.getItem('numeroJogo')
+    return savedNumero ? parseInt(savedNumero) : 1
+  })
+
+  const [casas, setCasas] = useState(() => {
+    const savedCasas = JSON.parse(localStorage.getItem('casas'))
+    return savedCasas || Array(9).fill(null)
+  })
+
   const zerarCasas = useState(Array(9).fill(null))
 
-  const [casas, setCasas] = zerarCasas
   const [vencedor, setVencedor] = useState(null)
   const [casasVitoria, setCasasVitoria] = useState([])
 
@@ -32,14 +41,32 @@ const Tabuleiro = () => {
 
   const [jogadorAtual, setJogadorAtual] = useState(0)
 
-  const [jogadasJogador1, setJogadasJogador1] = useState([])
-  const [jogadasJogador2, setJogadasJogador2] = useState([])
+  const [jogadasJogador1, setJogadasJogador1] = useState(() => {
+    const savedJogadasJogador1 = JSON.parse(
+      localStorage.getItem('jogadasJogador1')
+    )
+    return savedJogadasJogador1 || []
+  })
+  const [jogadasJogador2, setJogadasJogador2] = useState(() => {
+    const savedJogadasJogador2 = JSON.parse(
+      localStorage.getItem('jogadasJogador2')
+    )
+    return savedJogadasJogador2 || []
+  })
 
   const [modoJogo, setModoJogo] = useState('fácil')
 
   const [desativado, setDesativado] = useState(false)
 
   const [trancarDificuldade, setTrancarDificuldade] = useState(false)
+
+  useEffect(() => {
+    localStorage.setItem('casas', JSON.stringify(casas))
+    localStorage.setItem('vencedor', vencedor)
+    localStorage.setItem('jogadorAtual', jogadorAtual)
+    localStorage.setItem('jogadasJogador1', JSON.stringify(jogadasJogador1))
+    localStorage.setItem('jogadasJogador2', JSON.stringify(jogadasJogador2))
+  }, [casas, vencedor, jogadorAtual, jogadasJogador1, jogadasJogador2])
 
   const verificarVitoria = jogadas => {
     for (let combinacao of combinacoesVitoria) {
@@ -65,6 +92,13 @@ const Tabuleiro = () => {
     setDesativado(false)
     setHidden(true)
     setTrancarDificuldade(false)
+  }
+
+  const salvarResultado = resultado => {
+    const resultadosAnteriores =
+      JSON.parse(localStorage.getItem('resultados')) || []
+    resultadosAnteriores.push({numero: numeroJogo, resultado})
+    localStorage.setItem('resultados', JSON.stringify(resultadosAnteriores))
   }
 
   const jogadaAleatoria = novasCasas => {
@@ -113,7 +147,7 @@ const Tabuleiro = () => {
           verificarVitoria(novasJogadasJogador1)
         ) {
           setVencedor('Jogador 1')
-
+          salvarResultado('Vitória do Jogador 1')
           setHidden(false)
           return
         }
@@ -139,7 +173,7 @@ const Tabuleiro = () => {
             verificarVitoria(novasJogadasJogador2)
           ) {
             setVencedor('Jogador 2')
-
+            salvarResultado('Vitória do Jogador 1')
             setHidden(false)
             return
           }
@@ -149,8 +183,8 @@ const Tabuleiro = () => {
 
           if (verificarEmpate(novasCasas)) {
             setHidden(false)
-
             alert('O jogo terminou empatado!')
+            salvarResultado('Vitória do Jogador 1')
 
             reiniciarJogo()
           }
@@ -158,6 +192,17 @@ const Tabuleiro = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (vencedor !== null) {
+      setNumeroJogo(prev => {
+        const novoNumero = prev + 1
+        localStorage.setItem('numeroJogo', novoNumero)
+        return novoNumero
+      })
+      // reiniciarJogo()
+    }
+  }, [vencedor])
 
   return (
     <>
@@ -175,8 +220,8 @@ const Tabuleiro = () => {
             </button>
           </div>
 
-          <p className="m-auto size-fit font-bold text-5xl text-teal-600">
-            {vencedor === 'Jogador 1' ? 'Jogaador 1' : 'A máquina'} ganhou
+          <p className="m-auto size-fit font-bold text-5xl text-teal-300">
+            {vencedor === 'Jogador 1' ? 'Jogador 1' : 'A máquina'} ganhou
           </p>
 
           <button
@@ -184,8 +229,8 @@ const Tabuleiro = () => {
             onClick={reiniciarJogo}
             className={`${
               hidden ? 'hidden' : 'flex'
-            } py-2 px-6 bg-sky-500 text-white leading-loose rounded-2xl hover:bg-sky-600 transition ease-in-out mx-auto my-12`}>
-            Zerar Jogo
+            } btn-primary mx-auto my-10`}>
+            Jogar novamente
           </button>
         </div>
       </div>
@@ -217,18 +262,18 @@ const Tabuleiro = () => {
         <button
           type="button"
           onClick={() => setModoJogo('fácil')}
-          className={`py-2 px-4 mx-2 disabled:cursor-not-allowed ${
+          className={`transition ease-in-out duration-300 gap-x-2 rounded-xl px-5 py-2 text-zinc-50 hover:cursor-pointer ${
             modoJogo === 'fácil'
               ? 'bg-emerald-600 disabled:bg-emerald-600/50'
               : 'bg-slate-600'
-          } text-white rounded`}
+          }`}
           disabled={trancarDificuldade}>
           Fácil
         </button>
         <button
           type="button"
           onClick={() => setModoJogo('difícil')}
-          className={`py-2 px-4 mx-2 disabled:cursor-not-allowed ${
+          className={`transition ease-in-out duration-300 gap-x-2 rounded-xl px-5 py-2 text-zinc-50 hover:cursor-pointer mx-2 disabled:cursor-not-allowed ${
             modoJogo === 'difícil'
               ? 'bg-rose-600 disabled:bg-rose-600/50'
               : 'bg-slate-600'

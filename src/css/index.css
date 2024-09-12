@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components{
+    .btn-primary {
+        @apply transition ease-in-out duration-300 gap-x-2 rounded-xl bg-sky-500 px-5 py-2 text-zinc-50 hover:cursor-pointer hover:bg-sky-600 disabled:cursor-not-allowed disabled:bg-sky-500/50 hover:disabled:bg-sky-500/50;
+      }
+}
