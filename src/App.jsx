@@ -1,10 +1,10 @@
 import './css/App.css'
-import Tabuleiro from './components/Tabuleiro'
+import Jogo from './Jogo'
 
 function App() {
   return (
     <div className="bg-slate-900 h-screen">
-      <Tabuleiro />
+      <Jogo />
     </div>
   )
 }
