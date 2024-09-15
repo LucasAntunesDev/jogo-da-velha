@@ -17,18 +17,31 @@ const Placar = () => {
     setResultados(resultadosSalvos)
   }, [])
 
+  const zerarPlacar = () => {
+    localStorage.removeItem('resultados')
+    setResultados({
+      jogador1: 0,
+      jogador2: 0,
+      empates: 0,
+    })
+  }
+
   return (
     <main className="h-fit min-h-screen text-zinc-50">
       <h1 className="font-bold text-3xl md:text-5xl text-sky-500 my-8 mx-auto w-fit">
         Placar
       </h1>
 
-      <a
-        href="/"
-        className="btn-primary mx-auto flex items-center gap-x-2 w-fit">
-        <Hash className="block" />
-        <span>Jogar</span>
-      </a>
+      <div className="flex gap-x-8 items-center justify-center">
+        <a href="/" className="btn-primary flex items-center gap-x-2 w-fit">
+          <Hash className="block" />
+          <span>Jogar</span>
+        </a>
+
+        <button type="button" className="w-fit" onClick={zerarPlacar}>
+          Zerar placar
+        </button>
+      </div>
 
       {resultados.length === 0 ? (
         <p className="w-fit mx-auto my-8 text-3xl font-bold text-zinc-50 flex">
