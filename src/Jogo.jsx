@@ -78,21 +78,43 @@ const Jogo = () => {
     return indexAleatorio
   }
 
-  const jogadaDificil = novasCasas => {
+  const bloquear = (verificador, novasCasas) => {
     for (let combinacao of combinacoesVitoria) {
-      const jogadasJogador1NaCombinacao = combinacao.filter(index =>
-        jogadasJogador1.includes(index)
-      )
-      const casasVaziasNaCombinacao = combinacao.filter(
-        index => novasCasas[index] === null
-      )
+      const [a, b, c] = combinacao
+      const [primeiro, segundo, terceiro] = [
+        novasCasas[a],
+        novasCasas[b],
+        novasCasas[c],
+      ]
+
       if (
-        jogadasJogador1NaCombinacao.length === 2 &&
-        casasVaziasNaCombinacao.length === 1
+        (primeiro === verificador &&
+          segundo === verificador &&
+          terceiro === null) ||
+        (primeiro === verificador &&
+          terceiro === verificador &&
+          segundo === null) ||
+        (segundo === verificador &&
+          terceiro === verificador &&
+          primeiro === null)
       ) {
-        return casasVaziasNaCombinacao[0]
+        return combinacao.find(index => novasCasas[index] === null)
       }
     }
+    return null
+  }
+
+  const jogadaDificil = novasCasas => {
+    const jogadaGanhar = bloquear('O', novasCasas)
+    if (jogadaGanhar !== null) {
+      return jogadaGanhar
+    }
+
+    const jogadaBloquear = bloquear('X', novasCasas)
+    if (jogadaBloquear !== null) {
+      return jogadaBloquear
+    }
+
     return jogadaAleatoria(novasCasas)
   }
 
@@ -179,7 +201,7 @@ const Jogo = () => {
         resultado={resultado}
       />
 
-      <header className="flex flex-col gap-x-8 mx-auto w-fit p-2 rounded shadow mb-6 items-center">
+      <header className="flex flex-col gap-x-8 mx-auto w-fit p-2 rounded mb-6 items-center">
         <a
           href="/placar"
           className="text-white inline-flex hover:text-white/80 items-center gap-x-2">
