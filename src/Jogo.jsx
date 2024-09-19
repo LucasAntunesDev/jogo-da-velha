@@ -23,10 +23,22 @@ const Jogo = () => {
   const [jogadorAtual, setJogadorAtual] = useState(0)
   const [jogadasJogador1, setJogadasJogador1] = useState([])
   const [jogadasJogador2, setJogadasJogador2] = useState([])
-  const [modoJogo, setModoJogo] = useState('fácil')
   const [desativado, setDesativado] = useState(false)
-  const [trancarDificuldade, setTrancarDificuldade] = useState(false)
+  const [trancarDificuldade, setTrancarDificuldade] = useState(localStorage.getItem('trancar_dificuldade') || false)
+  const [dificuldade, setDificuldade] = useState(
+    localStorage.getItem('dificuldade') || 'fácil'
+  )
   const [hidden, setHidden] = useState(true)
+
+  const handleDificuldade = (dificuldade) => {
+    setDificuldade(dificuldade)
+    localStorage.setItem('dificuldade', dificuldade)
+  }
+
+  const handleTrancarDificuldade = () =>{
+    setTrancarDificuldade(true)
+    localStorage.setItem('trancar_dificuldade', true)
+  }
 
   const atualizarLocalStorage = resultado => {
     const resultados = JSON.parse(localStorage.getItem('resultados')) || {
@@ -68,6 +80,8 @@ const Jogo = () => {
     setDesativado(false)
     setHidden(true)
     setTrancarDificuldade(false)
+    localStorage.removeItem('trancar_dificuldade')
+    localStorage.removeItem('dificuldade')
   }
 
   const jogadaAleatoria = novasCasas => {
@@ -126,7 +140,7 @@ const Jogo = () => {
         novasCasas[index] = <X />
         const novasJogadasJogador1 = [...jogadasJogador1, index]
         setJogadasJogador1(novasJogadasJogador1)
-        setTrancarDificuldade(true)
+        handleTrancarDificuldade()
         setCasas(novasCasas)
 
         if (
@@ -151,7 +165,7 @@ const Jogo = () => {
 
         setTimeout(() => {
           const indexMaquina =
-            modoJogo === 'fácil'
+            dificuldade === 'fácil'
               ? jogadaAleatoria(novasCasas)
               : jogadaDificil(novasCasas)
 
@@ -224,9 +238,9 @@ const Jogo = () => {
       <div className="flex justify-center mb-4">
         <button
           type="button"
-          onClick={() => setModoJogo('fácil')}
+          onClick={() => handleDificuldade('fácil')}
           className={`py-2 px-4 mx-2 disabled:cursor-not-allowed ${
-            modoJogo === 'fácil'
+            dificuldade === 'fácil'
               ? 'bg-emerald-600 disabled:bg-emerald-600/50'
               : 'bg-slate-600'
           } text-white rounded`}
@@ -235,9 +249,9 @@ const Jogo = () => {
         </button>
         <button
           type="button"
-          onClick={() => setModoJogo('difícil')}
+          onClick={() => handleDificuldade('difícil')}
           className={`py-2 px-4 mx-2 disabled:cursor-not-allowed ${
-            modoJogo === 'difícil'
+            dificuldade === 'difícil'
               ? 'bg-rose-600 disabled:bg-rose-600/50'
               : 'bg-slate-600'
           } text-white rounded`}
