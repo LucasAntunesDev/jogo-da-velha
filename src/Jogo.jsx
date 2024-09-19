@@ -92,6 +92,7 @@ const Jogo = () => {
     setTrancarDificuldade(false);
     localStorage.removeItem('trancar_dificuldade');
     localStorage.removeItem('dificuldade');
+    localStorage.removeItem('casas');
   };
 
   const jogadaAleatoria = (novasCasas) => {
