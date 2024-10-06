@@ -28,7 +28,7 @@ const Placar = () => {
 
   return (
     <main className="h-fit min-h-screen text-zinc-50">
-      <h1 className="font-bold text-3xl md:text-5xl text-sky-500 my-8 mx-auto w-fit">
+      <h1 className="font-bold text-3xl md:text-5xl text-teal-500 my-8 mx-auto w-fit">
         Placar
       </h1>
 
@@ -49,15 +49,15 @@ const Placar = () => {
         </p>
       ) : (
         <div className="p-8 text-center flex gap-x-4 m-auto w-fit">
-          <p className="text-xl mb-2 p-4 rounded-2xl bg-slate-700 w-fit">
+          <p className="text-xl mb-2 p-4 rounded-2xl bg-neutral-700 w-fit">
             <span className="font-bold">Jogador: </span>
             {resultados.jogador1}
           </p>
-          <p className="text-xl mb-2 p-4 rounded-2xl bg-slate-700 w-fit">
+          <p className="text-xl mb-2 p-4 rounded-2xl bg-neutral-700 w-fit">
             <span className="font-bold">Máquina: </span>
             {resultados.jogador2}
           </p>
-          <p className="text-xl mb-2 p-4 rounded-2xl bg-slate-700 w-fit">
+          <p className="text-xl mb-2 p-4 rounded-2xl bg-neutral-700 w-fit">
             <span className="font-bold">Empates: </span>
             {resultados.empates}
           </p>

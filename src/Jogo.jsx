@@ -1,7 +1,8 @@
+import {Button, Dialog, DialogPanel, DialogTitle} from '@headlessui/react'
 import {useState} from 'react'
 import {ArrowRightIcon} from '@heroicons/react/16/solid'
+
 import Tabuleiro from './components/Tabuleiro'
-import Modal from './components/Modal'
 
 const Jogo = () => {
   const combinacoesVitoria = [
@@ -229,11 +230,34 @@ const Jogo = () => {
 
   return (
     <>
-      <Modal
-        hidden={hidden}
-        reiniciarJogo={reiniciarJogo}
-        resultado={resultado}
-      />
+      <Dialog
+        open={hidden === false}
+        as="div"
+        className="relative z-10 focus:outline-none"
+        onClose={reiniciarJogo}>
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto bg-neutral-950/60 backdrop-blur-sm">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <DialogPanel
+              transition
+              className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+              <DialogTitle as="h3" className="text-xl font-bold text-white">
+                {resultado === 'Jogador'
+                  ? 'Vitória do jogador!'
+                  : resultado === 'Máquina'
+                  ? 'Vitória da máquina!'
+                  : resultado === 'Empate'
+                  ? 'O jogo terminou em empate!'
+                  : ''}
+              </DialogTitle>
+              <div className="mt-4">
+                <Button className="btn-primary" onClick={reiniciarJogo}>
+                  Jogar Novamente
+                </Button>
+              </div>
+            </DialogPanel>
+          </div>
+        </div>
+      </Dialog>
 
       <header className="flex flex-col gap-x-8 mx-auto w-fit p-2 rounded mb-6 items-center">
         <a
@@ -255,26 +279,22 @@ const Jogo = () => {
         </div>
       </header>
 
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-4 gap-4">
         <button
           type="button"
           onClick={() => handleDificuldade('fácil')}
-          className={`py-2 px-4 mx-2 disabled:cursor-not-allowed ${
-            dificuldade === 'fácil'
-              ? 'bg-emerald-600 disabled:bg-emerald-600/50'
-              : 'bg-slate-600'
-          } text-white rounded`}
+          className={` ${
+            dificuldade === 'fácil' ? 'btn-success' : 'btn-neutral'
+          }`}
           disabled={trancarDificuldade}>
           Fácil
         </button>
         <button
           type="button"
           onClick={() => handleDificuldade('difícil')}
-          className={`py-2 px-4 mx-2 disabled:cursor-not-allowed ${
-            dificuldade === 'difícil'
-              ? 'bg-rose-600 disabled:bg-rose-600/50'
-              : 'bg-slate-600'
-          } text-white rounded`}
+          className={` ${
+            dificuldade === 'difícil' ? 'btn-danger' : 'btn-neutral'
+          }`}
           disabled={trancarDificuldade}>
           Difícil
         </button>
